@@ -20,5 +20,6 @@
 # How to deploy persistency
 - Migrations
 - db_user creation
+- rolling sql admin login with Terraform
 
 For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
