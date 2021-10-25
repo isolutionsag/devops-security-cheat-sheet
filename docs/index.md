@@ -8,6 +8,17 @@
 
 # Where to store secrets
 
+Azure DevOps secret variables vs. Key Vault
+
+> Secret Variables
+> + Easy to create
+> - "Lock in" to Azure DevOps
+> 
+> Key Vault
+> + Independent of pipeline
+> + Single point of truth
+> - A bit more effort needed
+
 # How to integrate key vault
 
 # How to create resources
