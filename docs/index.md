@@ -1,11 +1,5 @@
 # Introduction
 
-# Managed identity & AAD authentication
-- Snippets for .NET Core application
-- Snippets for deployment pipelines (get token without secret stored - az login)
-	- GitHub actions
-	- Azure DevOps YAML pipelines
-
 # Where to store secrets
 
 Azure DevOps secret variables vs. Key Vault
@@ -19,14 +13,20 @@ Azure DevOps secret variables vs. Key Vault
 > + Single point of truth
 > - A bit more effort needed
 
-# How to integrate key vault
+# How to integrate key vault in pipeline
+
+# Restrict permissions on Azure DevOps service connection
 
 # How to create resources
 - PowerShell
 - Terraform
 - others
 
-# Restrict permissions on Azure DevOps service connection
+# Managed identity & AAD authentication
+- Snippets for .NET Core application
+- Snippets for deployment pipelines (get token without secret stored - az login)
+	- GitHub actions
+	- Azure DevOps YAML pipelines
 
 # How to deploy persistency
 - Migrations
