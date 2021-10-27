@@ -1,5 +1,7 @@
 # Introduction
 
+# Restrict permissions on Azure DevOps service connection
+
 # Where to store secrets
 
 Azure DevOps secret variables vs. Key Vault
@@ -15,9 +17,8 @@ Azure DevOps secret variables vs. Key Vault
 
 # How to integrate key vault in pipeline
 
-# Restrict permissions on Azure DevOps service connection
-
 # How to create resources
+Recommended to not do without review and approval
 - PowerShell
 - Terraform
 - others
@@ -32,5 +33,8 @@ Azure DevOps secret variables vs. Key Vault
 - Migrations
 - db_user creation
 - rolling sql admin login with Terraform
+
+# How to integrate SonarCloud
+
 
 For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
