@@ -1,8 +1,24 @@
 # Introduction
 
-# Restrict permissions on Azure DevOps service connection
+This cheat sheet summarizes information and best practices concerning DevOps security.
 
-# Where to store secrets
+# General
+
+## How to create resources
+Recommended to not do without review and approval
+- PowerShell
+- Terraform
+- others
+
+## How to deploy persistency
+- Migrations
+- db_user creation
+- rolling sql admin login with Terraform
+
+# Azure DevOps
+## Restrict permissions for Azure DevOps service connection
+
+## Where to store secrets
 
 Azure DevOps secret variables vs. Key Vault
 
@@ -15,26 +31,18 @@ Azure DevOps secret variables vs. Key Vault
 > + Single point of truth
 > - A bit more effort needed
 
-# How to integrate key vault in pipeline
+## How to integrate Azure key vault in pipeline
 
-# How to create resources
-Recommended to not do without review and approval
-- PowerShell
-- Terraform
-- others
+# Azure
 
-# Managed identity & AAD authentication
+## Managed identity & AAD authentication
 - Snippets for .NET Core application
 - Snippets for deployment pipelines (get token without secret stored - az login)
 	- GitHub actions
 	- Azure DevOps YAML pipelines
 
-# How to deploy persistency
-- Migrations
-- db_user creation
-- rolling sql admin login with Terraform
+# Pipelines
 
-# How to integrate SonarCloud
-
+## How to integrate SonarCloud
 
 For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
