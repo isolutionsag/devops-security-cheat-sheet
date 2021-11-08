@@ -41,6 +41,8 @@ Azure DevOps secret variables vs. Key Vault
 ## Integration of Key Vault in Pipelines
 How to integrate Azure key vault in pipeline
 
+https://docs.microsoft.com/en-us/azure/devops/pipelines/release/azure-key-vault?view=azure-devops
+
 # Azure
 
 ## Managed identity & AAD authentication
