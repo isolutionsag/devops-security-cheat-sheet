@@ -4,6 +4,8 @@ This cheat sheet summarizes information and best practices concerning DevOps sec
 
 # General
 
+In context of DevOps security try to always follow the `Need to know` and `least privilege` principles.
+
 ## Supply Chain Security
 
 Since the SolarWinds hack, supply chain security has become significantly more important. The following recommendations will help you to increase supply chain security at least a little bit.
