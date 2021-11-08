@@ -1,24 +1,31 @@
 # Introduction
 
-This cheat sheet summarizes information and best practices concerning DevOps security.
+This cheat sheet summarizes information and best practices concerning DevOps security. As DevOps security is a really huge topic the cheat sheet has no claim to completeness but simply covers a few selected areas of DevOps security.
 
 # General
 
-## How to create resources
+## Supply Chain Security
+
+Update dependencies regularly to the newest version.
+
+## Resource Creation
 Recommended to not do without review and approval
 - PowerShell
 - Terraform
 - others
 
-## How to deploy persistency
+## Deployment of Persistency
 - Migrations
 - db_user creation
 - rolling sql admin login with Terraform
 
 # Azure DevOps
-## Restrict permissions for Azure DevOps service connection
 
-## Where to store secrets
+## Access Control for Azure DevOps Service Connections
+Restrict permissions for Azure DevOps service connection
+
+## Secrets Management
+Where to store secrets
 
 Azure DevOps secret variables vs. Key Vault
 
@@ -31,7 +38,8 @@ Azure DevOps secret variables vs. Key Vault
 > + Single point of truth
 > - A bit more effort needed
 
-## How to integrate Azure key vault in pipeline
+## Integration of Key Vault in Pipelines
+How to integrate Azure key vault in pipeline
 
 # Azure
 
@@ -43,6 +51,6 @@ Azure DevOps secret variables vs. Key Vault
 
 # Pipelines
 
-## How to integrate SonarCloud
+## Integration of SonarCloud
 
 For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
