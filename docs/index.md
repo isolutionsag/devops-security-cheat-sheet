@@ -1,10 +1,14 @@
 # Introduction
 
-This cheat sheet summarizes information and best practices concerning DevOps security.
+This cheat sheet summarizes information and best practices concerning DevOps security. As DevOps security is a really huge topic the cheat sheet has no claim to completeness but simply covers a few selected areas of DevOps security.
 
 # General
 
-## How to create resources
+## Supply Chain Security
+
+Update dependencies regularly to the newest version.
+
+## Resource Creation
 
 Recommended to not do without review and approval
 
@@ -12,7 +16,7 @@ Recommended to not do without review and approval
 - Terraform
 - others
 
-## How to deploy persistency
+## Deployment of Persistency
 
 - Migrations
 - db_user creation
@@ -20,11 +24,14 @@ Recommended to not do without review and approval
 
 # Azure DevOps
 
-## Restrict permissions for Azure DevOps service connection
+## Access Control for Azure DevOps Service Connections
 
+- Restrict permissions for Azure DevOps service connection.
 - Do not add add write permissions. _Get_ and _List_ are enough.
 
-## Where to store secrets
+## Secrets Management
+
+Where to store secrets
 
 Azure DevOps secret variables vs. Key Vault
 
@@ -56,7 +63,11 @@ Azure DevOps secret variables vs. Key Vault
 - A best practice is to create a separate vault for each deployment environment of each of your applications, such as development, test, and production.
 - Always carefully review your code to ensure that your app never writes secrets to any kind of output, including logs, storage, and responses. Never expose secrets.
 
-## How to integrate Azure key vault in pipeline
+## Integration of Key Vault in Pipelines
+
+How to integrate Azure key vault in pipeline
+
+https://docs.microsoft.com/en-us/azure/devops/pipelines/release/azure-key-vault?view=azure-devops
 
 1. Create Azure Key Vault.
 1. Create a task in your pipeline using _Azure Key Vault_ template.
@@ -87,6 +98,9 @@ steps:
 
 # Pipelines
 
-## How to integrate SonarCloud
+## Integration of SonarCloud
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+# Useful Links
+
+- [Code With Engineering Playbook](https://microsoft.github.io/code-with-engineering-playbook/security/)
+- [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/)
