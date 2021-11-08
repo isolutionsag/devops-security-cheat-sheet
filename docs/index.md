@@ -16,12 +16,6 @@ Recommended to not do without review and approval
 - Terraform
 - others
 
-## Deployment of Persistency
-
-- Migrations
-- db_user creation
-- rolling sql admin login with Terraform
-
 # Azure DevOps
 
 ## Access Control for Azure DevOps Service Connections
@@ -48,7 +42,7 @@ Recommended to not do without review and approval
 > - (+) A bit more effort needed
 > - (+) It comes with an extra cost, though is minimal [0.026 € per 10000 transactions](https://azure.microsoft.com/en-us/pricing/details/key-vault/).
 
-### KeyVault and non AzureDevOps pipelines
+### KeyVault and non Azure DevOps pipelines
 
 - How to integrate it with [GitHub actions](https://docs.microsoft.com/en-us/azure/developer/github/github-key-vault)
 - How to integrate it with [Jenkins](https://plugins.jenkins.io/azure-keyvault/)
@@ -97,6 +91,12 @@ How to integrate Azure key vault in pipeline
   - Azure DevOps YAML pipelines
 
 # Pipelines
+
+## Deployment of Persistency
+
+- Migrations
+- db_user creation
+- rolling sql admin login with Terraform
 
 ## Integration of SonarCloud
 
