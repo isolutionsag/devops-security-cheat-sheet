@@ -31,9 +31,7 @@ Recommended to not do without review and approval
 
 ## Secrets Management
 
-Where to store secrets
-
-Azure DevOps secret variables vs. Key Vault
+### Where to store secrets: Azure DevOps secret variables vs Key Vault
 
 > Secret Variables
 >
@@ -58,34 +56,36 @@ Azure DevOps secret variables vs. Key Vault
 ## Overall
 
 - Avoid secrets when is possible (try to use managed identity first)
-- If not possible, then use key vaults created in Azure to store secrets.
+- If it is not possible, then use key vaults created in Azure to store secrets.
+- If it is not possible to use managed identities neither Key Vault (ie, on promise client), then use Azure DevOps secret variables. When creating Azure DevOps variable do not forget to check _Keep this value secret_.
 - Do not create the service principal in Azure DevOps (or restrict the permissions afterwards).
 - A best practice is to create a separate vault for each deployment environment of each of your applications, such as development, test, and production.
 - Always carefully review your code to ensure that your app never writes secrets to any kind of output, including logs, storage, and responses. Never expose secrets.
+- Be aware and define who has permission to access artifacts. Do developers of the team really need to access artifacts?
 
 ## Integration of Key Vault in Pipelines
 
 How to integrate Azure key vault in pipeline
 
-https://docs.microsoft.com/en-us/azure/devops/pipelines/release/azure-key-vault?view=azure-devops
-
 1. Create Azure Key Vault.
 1. Create a task in your pipeline using _Azure Key Vault_ template.
 1. Select and authorize your Azure subscription and choose the key vault created in step 1. to be added in the pipeline. Your pipeline should look like this:
 
-```
-steps:
-- task: AzureKeyVault@2
-  inputs:
-    azureSubscription: 'Your-Azure-Subscription'
-    KeyVaultName: 'Your-Key-Vault-Name'
-    SecretsFilter: '*'
-    RunAsPreJob: false
-```
+   ```
+   steps:
+   - task: AzureKeyVault@2
+   inputs:
+       azureSubscription: 'Your-Azure-Subscription'
+       KeyVaultName: 'Your-Key-Vault-Name'
+       SecretsFilter: '*'
+       RunAsPreJob: false
+   ```
 
 1. Create your [service principal](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal#register-an-application-with-azure-ad-and-create-a-service-principal)
 1. Go to your KeyVault, under settings select _Access Policies_, and then _Add Access Policy_. Select your service principal created in previous step. As it is a secret _only assign Get and List permissions_ (important!), add and save.
 1. Save and run the pipeline. You should have a secret.txt file as a result.
+
+[Official documentation](https://docs.microsoft.com/en-us/azure/devops/pipelines/release/azure-key-vault?view=azure-devops)
 
 # Azure
 
