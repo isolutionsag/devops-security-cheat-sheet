@@ -22,6 +22,8 @@ Recommended to not do without review and approval
 
 ## Restrict permissions for Azure DevOps service connection
 
+- Do not add add write permissions. _Get_ and _List_ are enough.
+
 ## Where to store secrets
 
 Azure DevOps secret variables vs. Key Vault
@@ -43,15 +45,14 @@ Azure DevOps secret variables vs. Key Vault
 
 ### KeyVault and non AzureDevOps pipelines
 
-> How to integrate it with [GitHub actions](https://docs.microsoft.com/en-us/azure/developer/github/github-key-vault)
->
-> - How to integrate it with [Jenkins](https://plugins.jenkins.io/azure-keyvault/)
+- How to integrate it with [GitHub actions](https://docs.microsoft.com/en-us/azure/developer/github/github-key-vault)
+- How to integrate it with [Jenkins](https://plugins.jenkins.io/azure-keyvault/)
 
 ## Overall
 
 - Avoid secrets when is possible (try to use managed identity first)
 - If not possible, then use key vaults created in Azure to store secrets.
-- Do not create the service principal in Azure DevOps (or restrict the permissions afterwards, _Get_ and _List_ are enough)
+- Do not create the service principal in Azure DevOps (or restrict the permissions afterwards).
 - A best practice is to create a separate vault for each deployment environment of each of your applications, such as development, test, and production.
 - Always carefully review your code to ensure that your app never writes secrets to any kind of output, including logs, storage, and responses. Never expose secrets.
 
