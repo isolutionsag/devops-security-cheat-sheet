@@ -6,9 +6,18 @@ This cheat sheet summarizes information and best practices concerning DevOps sec
 
 ## Supply Chain Security
 
-Update dependencies regularly to the newest version.
+Since the SolarWinds hack, supply chain security has become significantly more important. The following recommendations will help you to increase supply chain security at least a little bit.
+
+- During library/package selection process check out ...
+  - ... the transitive dependencies
+  - ... the amount of collaborators (the more the better)
+  - ... the amount of downloads (the more the better)
+  - ... the latest activities (the more actual the better)
+- Download libraries/packages always from trusted sources (i.e. NuGet, Maven, npm, ...)
+- Update dependencies regularly to the latest version (at least to the latest minor version)
 
 ## Resource Creation
+
 
 Recommended to not do without review and approval
 
