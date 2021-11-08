@@ -55,4 +55,7 @@ https://docs.microsoft.com/en-us/azure/devops/pipelines/release/azure-key-vault?
 
 ## Integration of SonarCloud
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+
+# Useful Links
+- [Code With Engineering Playbook](https://microsoft.github.io/code-with-engineering-playbook/security/)
+- [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/)
