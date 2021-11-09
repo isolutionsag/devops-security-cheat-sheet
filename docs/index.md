@@ -96,6 +96,7 @@ The following tutorial shows how to connect your ASP.NET Core app to an Azure SQ
 ## Access Control for Azure DevOps Service Connections
 
 - Restrict permissions for Azure DevOps service connection.
+  - [Service connections in Azure Pipelines](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml#secure-a-service-connection)
 - Do not add add write permissions. _Get_ and _List_ are enough.
 
 ## Common pipeline tasks
