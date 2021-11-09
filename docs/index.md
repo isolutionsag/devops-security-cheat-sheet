@@ -126,7 +126,7 @@ How to integrate Azure key vault in pipeline
 
 ## Assign Azure SQL Permissions
 
-The following example show how to assign permissions on an Azure SQL Database to Azure Active Directory Groups.
+The following example show how to assign permissions on an Azure SQL Database to Azure Active Directory Groups in an Azure DevOps Pipeline.
 
 ### Prerequisites
 - An Azure SQL Database.
