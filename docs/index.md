@@ -62,18 +62,18 @@ Recommendations concerning source control configuration:
 
 > Secret Variables
 >
-> - (-) "Lock in" to Azure DevOps
->
 > - (+) Easy to create
+>
+> - (-) "Lock in" to Azure DevOps
 
 > Key Vault
 >
-> - (-) Independent of pipeline
-> - (-) Single point of truth
+> - (+) Independent of pipeline
+> - (+) Single point of truth
 >
-> - (+) Requires Azure account
-> - (+) A bit more effort needed
-> - (+) It comes with an extra cost, though is minimal [0.026 € per 10000 transactions](https://azure.microsoft.com/en-us/pricing/details/key-vault/).
+> - (-) Requires Azure account
+> - (-) A bit more effort needed
+> - (-) It comes with an extra cost, though is minimal [0.026 € per 10000 transactions](https://azure.microsoft.com/en-us/pricing/details/key-vault/).
 
 ### KeyVault and non Azure DevOps pipelines
 
