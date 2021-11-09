@@ -18,6 +18,12 @@ Since the SolarWinds hack, supply chain security has become significantly more i
 - Download libraries/packages always ans only from trusted sources (i.e. NuGet, Maven, npm, ...)
 - Update dependencies regularly to the latest version (at least to the latest minor version)
 
+### Dependency Analysis
+
+GitHub provides two interesting and recommendable tools for dependency analysis
+- [Dependency Graph](https://docs.github.com/en/code-security/supply-chain-security/understanding-your-software-supply-chain/about-the-dependency-graph)
+- [Dependabot Security Updates](https://docs.github.com/en/code-security/supply-chain-security/managing-vulnerabilities-in-your-projects-dependencies/configuring-dependabot-security-updates)
+
 ## Resource Creation
 
 Automation of resource creation also known as infrastructure as code (IaC) can increase security too. Besides it allows to reproduce the infrastructure easily, it reduces the risk of manual misconfiguration. Furthermore IaC supports mechanisms to roll secrets on every deployment.
@@ -126,6 +132,8 @@ How to integrate Azure key vault in pipeline
 - rolling sql admin login with Terraform
 
 ## Integration of SonarCloud
+
+Add snippet 
 
 # Useful Links
 
