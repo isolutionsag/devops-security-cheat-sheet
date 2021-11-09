@@ -116,11 +116,10 @@ How to integrate Azure key vault in pipeline
 # Azure
 
 ## Managed identity & AAD authentication
+Managed identities provide an identity for applications to use when connecting to resources that support Azure Active Directory (Azure AD) authentication. Using managed identities is the best way to access Azure resources and should be used whenever possible. Should secrets still be required at runtime of the application, they can be stored securely in an Azure Key Vault and read out via Managed Identity.
 
-- Snippets for .NET Core application
-- Snippets for deployment pipelines (get token without secret stored - az login)
-  - GitHub actions
-  - Azure DevOps YAML pipelines
+The following tutorial shows how to connect your ASP.NET Core app to an Azure SQL Database.
+- [Tutorial: ASP.NET Core with Azure SQL Database - Azure App Service](https://docs.microsoft.com/en-us/azure/app-service/tutorial-dotnetcore-sqldb-app)
 
 # Pipelines
 
