@@ -98,14 +98,13 @@ How to integrate Azure key vault in pipeline
 1. Create a task in your pipeline using _Azure Key Vault_ template.
 1. Select and authorize your Azure subscription and choose the key vault created in step 1. to be added in the pipeline. Your pipeline should look like this:
 
-   ```
-   steps:
+   ```yaml
    - task: AzureKeyVault@2
-   inputs:
-       azureSubscription: 'Your-Azure-Subscription'
-       KeyVaultName: 'Your-Key-Vault-Name'
-       SecretsFilter: '*'
-       RunAsPreJob: false
+     inputs:
+         azureSubscription: 'Your-Azure-Subscription'
+         KeyVaultName: 'Your-Key-Vault-Name'
+         SecretsFilter: '*'
+         RunAsPreJob: false
    ```
 
 1. Create your [service principal](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal#register-an-application-with-azure-ad-and-create-a-service-principal)
