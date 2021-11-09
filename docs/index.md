@@ -133,7 +133,19 @@ How to integrate Azure key vault in pipeline
 
 ## Integration of SonarCloud
 
-Add snippet 
+Add snippet
+
+## Secrets Detection
+
+Tools for secrets detection offer an additional possibility to enforce secret-free code. Usually secrets detection will be integrated into the build pipeline and let the build fail in case a secret gets detected. `YELP detect-secrets` is such a tool that canbe integrated into build pipelines. A HOWTO for Azure DevOps YAML pipelines can be found [here](https://microsoft.github.io/code-with-engineering-playbook/continuous-integration/dev-sec-ops/secret-management/recipes/detect-secrets-ado/).
+
+In case a secret got detected there are multiple options to resolve the issue after removing the secret from code:
+
+- Merge feature into dev/develop branch using merge type `squash commit`
+- Delete feature branch completely and start from scratch
+
+Make sure that in any case the secret gets invalidated by changing the key/password/secret at the corresponding destination system.
+Hint: GitHub automatically disables GitHub access tokens that get committed to the GitHub repository they belong to on commit.
 
 # Useful Links
 
