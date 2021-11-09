@@ -133,7 +133,68 @@ How to integrate Azure key vault in pipeline
 
 ## Integration of SonarCloud
 
-Add snippet
+To execute SonarCloud analysis for example on each pull request (including each commit on that pull request) you first have to create a new project at [SonarCloud](https://sonarcloud.io/). 
+
+Such a pipeline for a .NET Core Web API with a ReactJS frontend could then look as follows.
+
+```yaml
+name: 'PROJECT_NAME SonarCloud'
+trigger:
+  - develop
+
+variables:
+  - name: 'BuildConfiguration'
+    value: 'Release'
+  - name: 'isTargetDevelopBranch'
+    value: $[eq(variables['system.pullRequest.targetBranch'], 'refs/heads/develop')]
+
+pool:
+  vmImage: 'windows-latest'
+jobs:
+  - job: build
+    displayName: build
+    condition: eq(variables.isTargetDevelopBranch, true)
+    steps:
+      - task: SonarCloudPrepare@1
+        displayName: 'Prepare analysis on SonarCloud'
+        inputs:
+          SonarCloud: 'SONAR_CLOUD_ENDPOINT_NAME'
+          organization: SONAR_CLOUD_ORGANIZATION_NAME
+          projectKey: 'SONAR_CLOUD_PROJECT_KEY'
+          extraProperties: |
+            sonar.exclusions=**/obj/**,**/*.dll
+            sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/**/coverage.opencover.xml
+            sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)/*.trx
+            sonar.cs.file.suffixes=.cs
+            sonar.cs.ignoreHeaderComments=True
+            sonar.sources=src/frontend
+      - task: DotNetCoreCLI@2
+        displayName: Build
+        inputs:
+          projects: '**/*.sln'
+          arguments: '--configuration $(BuildConfiguration)'
+      - task: DotNetCoreCLI@2
+        displayName: Test
+        inputs:
+          command: test
+          projects: '**/*Tests/*.csproj'
+          arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
+      - task: 'SonarCloudAnalyze@1'
+        displayName: 'Run Code Analysis'
+      - task: 'SonarCloudPublish@1'
+        displayName: 'Publish Quality Gate Result'
+      - task: DotNetCoreCLI@2
+        displayName: Restore
+        inputs:
+          command: restore
+          projects: '**/*.sln'
+```
+
+To be replaced:
+- `PROJECT_NAME`
+- `SONAR_CLOUD_ENDPOINT_NAME`
+- `SONAR_CLOUD_ORGANIZATION_NAME`
+- `SONAR_CLOUD_PROJECT_KEY`
 
 ## Secrets Detection
 
