@@ -49,12 +49,25 @@ Recommendations concerning source control configuration:
   - Allow commits to master/main only through pull requests
 - Restrict write access to contributors
 
+# Azure
+
+## Managed identity & AAD authentication
+Managed identities provide an identity for applications to use when connecting to resources that support Azure Active Directory (Azure AD) authentication. Using managed identities is the best way to access Azure resources and should be used whenever possible. Should secrets still be required at runtime of the application, they can be stored securely in an Azure Key Vault and read out via Managed Identity.
+
+The following tutorial shows how to connect your ASP.NET Core app to an Azure SQL Database.
+- [Tutorial: ASP.NET Core with Azure SQL Database - Azure App Service](https://docs.microsoft.com/en-us/azure/app-service/tutorial-dotnetcore-sqldb-app)
+
 # Azure DevOps
 
-## Access Control for Azure DevOps Service Connections
+## Overall
 
-- Restrict permissions for Azure DevOps service connection.
-- Do not add add write permissions. _Get_ and _List_ are enough.
+- Avoid secrets when is possible (try to use managed identity first)
+- If it is not possible, then use key vaults created in Azure to store secrets.
+- If it is not possible to use managed identities neither Key Vault (ie, on promise client), then use Azure DevOps secret variables. When creating Azure DevOps variable do not forget to check _Keep this value secret_.
+- Do not create the service principal in Azure DevOps (or restrict the permissions afterwards).
+- A best practice is to create a separate vault for each deployment environment of each of your applications, such as development, test, and production.
+- Always carefully review your code to ensure that your app never writes secrets to any kind of output, including logs, storage, and responses. Never expose secrets.
+- Be aware and define who has permission to access artifacts. Do developers of the team really need to access artifacts?
 
 ## Secrets Management
 
@@ -80,17 +93,14 @@ Recommendations concerning source control configuration:
 - How to integrate it with [GitHub actions](https://docs.microsoft.com/en-us/azure/developer/github/github-key-vault)
 - How to integrate it with [Jenkins](https://plugins.jenkins.io/azure-keyvault/)
 
-## Overall
+## Access Control for Azure DevOps Service Connections
 
-- Avoid secrets when is possible (try to use managed identity first)
-- If it is not possible, then use key vaults created in Azure to store secrets.
-- If it is not possible to use managed identities neither Key Vault (ie, on promise client), then use Azure DevOps secret variables. When creating Azure DevOps variable do not forget to check _Keep this value secret_.
-- Do not create the service principal in Azure DevOps (or restrict the permissions afterwards).
-- A best practice is to create a separate vault for each deployment environment of each of your applications, such as development, test, and production.
-- Always carefully review your code to ensure that your app never writes secrets to any kind of output, including logs, storage, and responses. Never expose secrets.
-- Be aware and define who has permission to access artifacts. Do developers of the team really need to access artifacts?
+- Restrict permissions for Azure DevOps service connection.
+- Do not add add write permissions. _Get_ and _List_ are enough.
 
-## Integration of Key Vault in Pipelines
+## Common pipeline tasks
+
+### Integration of Key Vault in Pipelines
 
 How to integrate Azure key vault in pipeline
 
@@ -113,25 +123,16 @@ How to integrate Azure key vault in pipeline
 
 [Official documentation](https://docs.microsoft.com/en-us/azure/devops/pipelines/release/azure-key-vault?view=azure-devops)
 
-# Azure
 
-## Managed identity & AAD authentication
-Managed identities provide an identity for applications to use when connecting to resources that support Azure Active Directory (Azure AD) authentication. Using managed identities is the best way to access Azure resources and should be used whenever possible. Should secrets still be required at runtime of the application, they can be stored securely in an Azure Key Vault and read out via Managed Identity.
-
-The following tutorial shows how to connect your ASP.NET Core app to an Azure SQL Database.
-- [Tutorial: ASP.NET Core with Azure SQL Database - Azure App Service](https://docs.microsoft.com/en-us/azure/app-service/tutorial-dotnetcore-sqldb-app)
-
-# Pipelines
-
-## Assign Azure SQL Permissions
+### Assign Azure SQL Permissions
 
 The following example show how to assign permissions on an Azure SQL Database to Azure Active Directory Groups in an Azure DevOps Pipeline.
 
-### Prerequisites
+#### Prerequisites
 - An Azure SQL Database.
 - [Prerequisites of Azure CLI task](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/deploy/azure-cli#prerequisites)
 
-### Task to assign permissions
+#### Task to assign permissions
 ```yaml
 - task: AzureCLI@2
   inputs:
@@ -164,14 +165,14 @@ To be replaced:
 - DB_NAME
 - WRITER_GROUP_NAME
 
-### Related tasks
+#### Related tasks
 The same mechanism can be used to perform other database actions, such as performing migrations.
 ```powershell
 # Execute SQL Command     
 Invoke-Sqlcmd -ServerInstance DB_SERVER_URL -Database DB_NAME -AccessToken $accessToken -InputFile "migrations.sql"
 ```
 
-## Integration of SonarCloud
+### Integration of SonarCloud
 
 To execute SonarCloud analysis for example on each pull request (including each commit on that pull request) you first have to create a new project at [SonarCloud](https://sonarcloud.io/). 
 
@@ -236,7 +237,7 @@ To be replaced:
 - `SONAR_CLOUD_ORGANIZATION_NAME`
 - `SONAR_CLOUD_PROJECT_KEY`
 
-## Secrets Detection
+### Secrets Detection
 
 Tools for secrets detection offer an additional possibility to enforce secret-free code. Usually secrets detection will be integrated into the build pipeline and let the build fail in case a secret gets detected. `YELP detect-secrets` is such a tool that canbe integrated into build pipelines. A HOWTO for Azure DevOps YAML pipelines can be found [here](https://microsoft.github.io/code-with-engineering-playbook/continuous-integration/dev-sec-ops/secret-management/recipes/detect-secrets-ado/).
 
