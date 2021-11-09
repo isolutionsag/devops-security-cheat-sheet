@@ -15,17 +15,23 @@ Since the SolarWinds hack, supply chain security has become significantly more i
   - ... the amount of collaborators (the more the better)
   - ... the amount of downloads (the more the better)
   - ... the latest activities (the more actual the better)
-- Download libraries/packages always from trusted sources (i.e. NuGet, Maven, npm, ...)
+- Download libraries/packages always ans only from trusted sources (i.e. NuGet, Maven, npm, ...)
 - Update dependencies regularly to the latest version (at least to the latest minor version)
 
 ## Resource Creation
 
+Automation of resource creation also known as infrastructure as code (IaC) can increase security too. Besides it allows to reproduce the infrastructure easily, it reduces the risk of manual misconfiguration. Furthermore IaC supports mechanisms to roll secrets on every deployment.
+It's a good practice to always review changes to the infrastructure before they get applied.
 
-Recommended to not do without review and approval
+Possible tools to automate infrastructure creation are:
 
-- PowerShell
-- Terraform
-- others
+- [Microsoft PowerShell](https://docs.microsoft.com/en-us/powershell/)
+- [HashiCorp Terraform](https://www.terraform.io/)
+- [AWS CloudFormation](https://aws.amazon.com/cloudformation/)
+- [Chef](https://www.chef.io/products/chef-infra)
+- [Puppet](https://puppet.com/)
+- [Ansible](https://www.ansible.com/)
+- ...
 
 # Azure DevOps
 
