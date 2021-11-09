@@ -167,9 +167,15 @@ To be replaced:
 - WRITER_GROUP_NAME
 
 #### Related tasks
-The same mechanism can be used to perform other database actions, such as performing migrations.
+The same mechanism can be used to perform other database actions, such as applying EF Core migrations.
+
 ```powershell
-# Execute SQL Command     
+dotnet tool install --global dotnet-ef --version 5.0.9
+dotnet ef migrations script --idempotent --project PATH/TO/PROJECT/FOLDER --startup-project PATH/TO/STARTUP/PROJECT/FOLDER --output migrations.sql
+
+$accessToken = az account get-access-token --resource=https://database.windows.net | ConvertFrom-Json | select -ExpandProperty accessToken
+
+# Execute SQL Command
 Invoke-Sqlcmd -ServerInstance DB_SERVER_URL -Database DB_NAME -AccessToken $accessToken -InputFile "migrations.sql"
 ```
 
