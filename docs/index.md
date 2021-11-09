@@ -33,6 +33,16 @@ Possible tools to automate infrastructure creation are:
 - [Ansible](https://www.ansible.com/)
 - ...
 
+## Source Control Configuration
+
+Recommendations concerning source control configuration:
+
+- Protect branches
+  - Restrict access to dev/develop branch to developers
+  - Restrict access to master/main branch to release manager and its deputy
+  - Allow commits to master/main only through pull requests
+- Restrict write access to contributors
+
 # Azure DevOps
 
 ## Access Control for Azure DevOps Service Connections
