@@ -125,170 +125,52 @@ How to integrate Azure key vault in pipeline
 
 # Pipelines
 
-## Deployment of Persistency
+## Assign Azure SQL Permissions
 
-There are multiple possibilities to manage persistence layer in a deployment pipeline. The following example shows a secret-less approach that does the following:
+The following example show how to assign permissions on an Azure SQL Database to Azure Active Directory Groups.
 
-- Apply EF Core migrations to a SQL database by making use of idempotent script approach
-- Create users for Azure Active Directory (AAD) roles in the database to support AAD authentication
-- Assgin before created database users for AAD roles to built in database roles
+### Prerequisites
+- An Azure SQL Database.
+- [Prerequisites of Azure CLI task](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/deploy/azure-cli#prerequisites)
 
-**Root YAML file**
+### Task to assign permissions
 ```yaml
-name: 'PIPELINE_NAME_HERE'
-trigger:
-  batch: true
-  branches:
-    include:
-      - main
-      - dev
-  paths:
-    include:
-      - src
-variables:
-  - name: 'isMainBranch'
-    value: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
-  - name: 'isDevBranch'
-    value: $[eq(variables['Build.SourceBranch'], 'refs/heads/dev')]
-  - name: 'isTargetMainBranch'
-    value: $[eq(variables['system.pullRequest.targetBranch'], 'refs/heads/main')]
-  - name: 'isReleasePR'
-    value: $[startsWith(variables['system.pullRequest.sourceBranch'], 'refs/heads/release')]
-  - name: 'isHotfixPR'
-    value: $[startsWith(variables['system.pullRequest.sourceBranch'], 'refs/heads/hotfix')]
-  - name: 'rootPath'
-    value: 'src'
-  - name: 'artifactName'
-    value: 'APP_NAME_HERE'
-  - name: 'DOTNET_CLI_TELEMETRY_OPTOUT'
-    value: true
-pool:
-  vmImage: 'windows-latest'
-stages:
-  - stage: Build
-    displayName: 'Build'
-    jobs:
-      - template: jobs-build-dotnet.yml
-        parameters:
-          artifactName: $(artifactName)
-          rootPath: $(rootPath)
-  - stage: DeployDev
-    displayName: 'Deploy to DEV'
-    dependsOn: Build
-    condition: and(succeeded(), eq(variables.isDevBranch, true))
-    jobs:
-      - template: jobs-deploy.yml
-        parameters:
-          artifactName: $(artifactName)
-          environment: 'Development'
-          environmentCode: 'd1'
-          serviceConnection: 'SERVICE_CONNECTION_NAME_HERE'
-          webAppName: 'WEB_APP_NAME_HERE'
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: AZURE_SUBSCRIPTION
+    scriptType: pscore
+    scriptLocation: inlineScript
+    inlineScript: |
+      # Install PS Modules
+      Install-Module SqlServer -Scope CurrentUser -Force
+              
+      # Get Access Token
+      $accessToken = az account get-access-token --resource=https://database.windows.net | ConvertFrom-Json | select -ExpandProperty accessToken
+
+      # Create SQL Command
+      $setGroupPermissionsCommand = @"
+          IF NOT EXISTS(SELECT name FROM sys.database_principals WHERE name = 'WRITER_GROUP_NAME')
+          BEGIN
+          CREATE USER [WRITER_GROUP_NAME] FROM EXTERNAL PROVIDER
+          ALTER ROLE db_datawriter ADD MEMBER [WRITER_GROUP_NAME]
+          END
+      "@
+
+      # Execute SQL Command     
+      Invoke-Sqlcmd -ServerInstance DB_SERVER_URL -Database DB_NAME -AccessToken $accessToken -Query $setGroupPermissionsCommand
 ```
 
-**jobs-deploy.yml**
-```yaml
-parameters:
-  - name: 'artifactName'
-    type: string
-  - name: 'environment'
-    type: string
-  - name: 'environmentCode'
-    type: string
-  - name: 'serviceConnection'
-    type: string
-  - name: 'webAppName'
-    type: string
-    
-jobs:
-  - deployment: 'Deploy'
-    displayName: 'Deploy Azure Web App'
-    environment: ${{parameters.environment}}
-    variables:
-      databaseName: customer-${{parameters.environmentCode}}-sqldb-dbname
-      databaseServerUrl: customer-${{parameters.environmentCode}}-sql-dbservername.database.windows.net
-      readerGroupName: sqldb-dbname-${{parameters.environmentCode}}-dbreader
-      writerGroupName: sqldb-dbname-${{parameters.environmentCode}}-dbwriter
-      ownerGroupName: sqldb-dbname-${{parameters.environmentCode}}-dbowner
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-            - checkout: self
-            
-            - template: steps-prepare-database.yml
-              parameters:
-                databaseName: $(databaseName)
-                databaseServerUrl: $(databaseServerUrl)
-                readerGroupName: $(readerGroupName)
-                writerGroupName: $(writerGroupName)
-                ownerGroupName: $(ownerGroupName)
-                serviceConnection: ${{parameters.serviceConnection}}
+To be replaced:
+- AZURE_SUBSCRIPTION
+- DB_SERVER_URL
+- DB_NAME
+- WRITER_GROUP_NAME
 
-            - task: AzureRmWebAppDeployment@4
-              displayName: Deploy Azure Web App
-              inputs:
-                ConnectionType: 'AzureRM'
-                azureSubscription: ${{parameters.serviceConnection}}
-                appType: 'webApp'
-                WebAppName: ${{parameters.webAppName}}
-                packageForLinux: '$(Agent.BuildDirectory)/${{parameters.artifactName}}/*.zip'
-```
-
-**steps-prepare-database.yml**
-```yaml
-parameters:
-  databaseName: ""
-  databaseServerUrl: ""
-  readerGroupName: ""
-  writerGroupName: ""
-  ownerGroupName: ""
-  serviceConnection: ""
-
-steps:
-  - task: AzureCLI@2
-    displayName: Database ${{parameters.databaseName}} - Set permissions
-    inputs:
-      azureSubscription: ${{parameters.serviceConnection}}
-      scriptType: pscore
-      scriptLocation: inlineScript
-      inlineScript: |
-        $accessToken = az account get-access-token --resource=https://database.windows.net | ConvertFrom-Json | select -ExpandProperty accessToken
-        $setGroupPermissionsQuery = @"
-            IF NOT EXISTS(SELECT name FROM sys.database_principals WHERE name = '${{parameters.readerGroupName}}')
-            BEGIN
-            CREATE USER [${{parameters.readerGroupName}}] FROM EXTERNAL PROVIDER
-            ALTER ROLE db_datareader ADD MEMBER [${{parameters.readerGroupName}}] 
-            END
-            IF NOT EXISTS(SELECT name FROM sys.database_principals WHERE name = '${{parameters.writerGroupName}}')
-            BEGIN
-            CREATE USER [${{parameters.writerGroupName}}] FROM EXTERNAL PROVIDER
-            ALTER ROLE db_datawriter ADD MEMBER [${{parameters.writerGroupName}}]
-            END
-            IF NOT EXISTS(SELECT name FROM sys.database_principals WHERE name = '${{parameters.ownerGroupName}}')
-            BEGIN
-            CREATE USER [${{parameters.ownerGroupName}}] FROM EXTERNAL PROVIDER
-            ALTER ROLE db_owner ADD MEMBER [${{parameters.ownerGroupName}}]
-            END
-        "@
-        Install-Module SqlServer -Scope CurrentUser -Force
-        Invoke-Sqlcmd -ServerInstance ${{parameters.databaseServerUrl}} -Database ${{parameters.databaseName}} -AccessToken $accessToken -Query $setGroupPermissionsQuery
-
-  - task: AzureCLI@2
-    displayName: Database ${{parameters.databaseName}} - Apply migrations
-    inputs:
-      azureSubscription: ${{parameters.serviceConnection}}
-      scriptType: pscore
-      scriptLocation: inlineScript
-      inlineScript: |
-        dotnet tool install --global dotnet-ef --version 5.0.9
-        dotnet ef migrations script --idempotent --project src/Server.Data --startup-project src/Server --output migrations.sql
-        
-        $accessToken = az account get-access-token --resource=https://database.windows.net | ConvertFrom-Json | select -ExpandProperty accessToken
-        
-        Install-Module SqlServer -Scope CurrentUser -Force
-        Invoke-Sqlcmd -ServerInstance ${{parameters.databaseServerUrl}} -Database ${{parameters.databaseName}} -AccessToken $accessToken -InputFile "migrations.sql"
-
+### Related tasks
+The same mechanism can be used to perform other database actions, such as performing migrations.
+```powershell
+# Execute SQL Command     
+Invoke-Sqlcmd -ServerInstance DB_SERVER_URL -Database DB_NAME -AccessToken $accessToken -InputFile "migrations.sql"
 ```
 
 ## Integration of SonarCloud
