@@ -15,7 +15,7 @@ Since the SolarWinds hack, supply chain security has become significantly more i
   - ... the amount of collaborators (the more the better)
   - ... the amount of downloads (the more the better)
   - ... the latest activities (the more actual the better)
-- Download libraries/packages always ans only from trusted sources (i.e. NuGet, Maven, npm, ...)
+- Download libraries/packages only from trusted sources (i.e. NuGet, Maven, npm, ...)
 - Update dependencies regularly to the latest version (at least to the latest minor version)
 
 ### Dependency Analysis
