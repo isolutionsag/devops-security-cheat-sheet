@@ -33,10 +33,11 @@ Possible tools to automate infrastructure creation are:
 
 - [Microsoft PowerShell](https://docs.microsoft.com/en-us/powershell/)
 - [HashiCorp Terraform](https://www.terraform.io/)
-- [AWS CloudFormation](https://aws.amazon.com/cloudformation/)
 - [Chef](https://www.chef.io/products/chef-infra)
 - [Puppet](https://puppet.com/)
 - [Ansible](https://www.ansible.com/)
+- [Pulumi](https://www.pulumi.com/)
+- [Bicep](https://github.com/Azure/bicep)
 - ...
 
 ## Source Control Configuration
